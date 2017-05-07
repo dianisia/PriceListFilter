@@ -1,0 +1,9 @@
+D:\PriselistFilter\PriselistFilter\bin\Debug\PriselistFilter.exe.config
+D:\PriselistFilter\PriselistFilter\bin\Debug\PriselistFilter.exe
+D:\PriselistFilter\PriselistFilter\bin\Debug\PriselistFilter.pdb
+D:\PriselistFilter\PriselistFilter\obj\Debug\PriselistFilter.csprojResolveAssemblyReference.cache
+D:\PriselistFilter\PriselistFilter\obj\Debug\PriselistFilter.Form1.resources
+D:\PriselistFilter\PriselistFilter\obj\Debug\PriselistFilter.Properties.Resources.resources
+D:\PriselistFilter\PriselistFilter\obj\Debug\PriselistFilter.csproj.GenerateResource.Cache
+D:\PriselistFilter\PriselistFilter\obj\Debug\PriselistFilter.exe
+D:\PriselistFilter\PriselistFilter\obj\Debug\PriselistFilter.pdb
