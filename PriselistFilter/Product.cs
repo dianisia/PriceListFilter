@@ -10,25 +10,30 @@ namespace PriselistFilter
 {
     public class Product
     {
-        //[ExcelColumn("Номенклатура#Производитель")] 
         public string Manufactor { get; set; }
 
-        //[ExcelColumn("Артикул")] 
         public string Article { get; set; }
 
-        //[ExcelColumn("Наименование полное")] 
         public string FullName { get; set; }
 
-        //[ExcelColumn("Единица измерения")] 
         public string Measure { get; set; }
 
-        //[ExcelColumn("Кратность")] 
         public string Multiplicity { get; set; }
 
-        //[ExcelColumn("Цена")] 
         public string Price { get; set; }
 
-        //[ExcelColumn("ПредставлениеОстатка")] 
         public string Balance { get; set; }
+
+        public Product(string manufactor, string article, string fullname, 
+                        string measure, string mult, string price, string balance) 
+        {
+            Manufactor = manufactor;
+            Article = article;
+            FullName = fullname;
+            Measure = measure;
+            Multiplicity = mult;
+            Price = price;
+            Balance = balance;
+        }
     }
 }

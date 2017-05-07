@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.IO;
 using LinqToExcel;
 using System.Globalization;
+using Excel;
+using System.Data;
+using System.Reflection;
 
 namespace PriselistFilter
 {
@@ -15,18 +18,28 @@ namespace PriselistFilter
         private List<Product> filteredData;
         public XlsWorker(string filename)
         {
-            ExcelQueryFactory xlsObject = new ExcelQueryFactory(filename);
-            xlsObject.AddMapping<Product>(x => x.Manufactor, "Номенклатура#Производитель");
-            xlsObject.AddMapping<Product>(x => x.Article, "Артикул");
-            xlsObject.AddMapping<Product>(x => x.FullName, "Наименование полное");
-            xlsObject.AddMapping<Product>(x => x.Measure, "Единица измерения");
-            xlsObject.AddMapping<Product>(x => x.Multiplicity, "Кратность");
-            xlsObject.AddMapping<Product>(x => x.Price, "Цена");
-            xlsObject.AddMapping<Product>(x => x.Balance, "ПредставлениеОстатка");
+            FileStream stream = File.Open(filename, FileMode.Open, FileAccess.Read);
+            IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+            excelReader.IsFirstRowAsColumnNames = true;
+            DataSet result = excelReader.AsDataSet();
+            CreateXlsData(result);
+        }
 
-            var temp = from c in xlsObject.Worksheet<Product>()
-                       select c;
-            xlsData = temp.ToList();
+        private void CreateXlsData(DataSet result)
+        {
+            var table = result.Tables[0];
+            xlsData = new List<Product>();
+            for (int i = 0; i < table.Rows.Count; ++i )
+            {
+                var manufactor = table.Rows[i][0].ToString();
+                var article = table.Rows[i][1].ToString();
+                var fullName = table.Rows[i][2].ToString();
+                var measure = table.Rows[i][3].ToString();
+                var mult = table.Rows[i][4].ToString();
+                var price = table.Rows[i][5].ToString();
+                var balance = table.Rows[i][6].ToString();
+                xlsData.Add(new Product(manufactor, article, fullName, measure, mult, price, balance));  
+            }
         }
 
         public void FilterRowsByManufactor(string[] keywords)
@@ -37,10 +50,15 @@ namespace PriselistFilter
         public void SaveFile()
         {
             var csv = new StringBuilder();
+            PropertyInfo[] properties = typeof(Product).GetProperties();
 
             for (int i = 0; i < filteredData.Count; i++)
             {
-                var newLine = filteredData[i].Manufactor + ";" + filteredData[i].FullName + ";" + filteredData[i].Price;
+                var newLine = "";
+                foreach (PropertyInfo propertyInfo in properties)
+                {
+                    newLine += propertyInfo.GetValue(filteredData[i]) + ";";
+                }
                 csv.AppendLine(newLine);
             }
             File.WriteAllText("result.csv", csv.ToString(), Encoding.Default);
