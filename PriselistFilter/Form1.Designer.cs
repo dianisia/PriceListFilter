@@ -121,6 +121,7 @@
             this.startFilter.TabIndex = 5;
             this.startFilter.Text = "Фильтровать";
             this.startFilter.UseVisualStyleBackColor = true;
+            this.startFilter.Click += new System.EventHandler(this.startFilter_Click);
             // 
             // Form1
             // 
