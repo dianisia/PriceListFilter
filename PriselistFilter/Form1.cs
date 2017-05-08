@@ -27,6 +27,7 @@ namespace PriselistFilter
         private void checkFIlterByName_CheckedChanged(object sender, EventArgs e)
         {
             nameInput.Enabled = !nameInput.Enabled;
+            notIncludeNameInput.Enabled = !notIncludeNameInput.Enabled;
             startFilter.Enabled = checkFilterByManufactor.Checked || checkFIlterByName.Checked;
         }
 
@@ -45,12 +46,23 @@ namespace PriselistFilter
 
         private void startFilter_Click(object sender, EventArgs e)
         {
+            saveButton.Enabled = true;
             if (checkFilterByManufactor.Checked)
             {
-                var keyWords = manufactorInput.Text.Split(',').Select(keyword => keyword.Trim()).ToArray();
-                xlsFileWorker.FilterRowsByManufactor(keyWords);
-                xlsFileWorker.SaveFile();
+                var manufactorKeyWords = manufactorInput.Text.Split(',').Select(keyword => keyword.Trim().ToLower()).ToArray();
+                xlsFileWorker.FilterRowsByManufactor(manufactorKeyWords);
             }
+            if (checkFIlterByName.Checked)
+            {
+                var nameKeyWords = nameInput.Text.Split(',').Select(keyword => keyword.Trim().ToLower()).ToArray();
+                var notIncludeKeyWords = notIncludeNameInput.Text.Split(',').Select(keyword => keyword.Trim().ToLower()).ToArray();
+                xlsFileWorker.FilterRowsByName(nameKeyWords, notIncludeKeyWords);
+            }
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            xlsFileWorker.SaveFile();
         }
     }
 }

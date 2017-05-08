@@ -7,3 +7,13 @@ D:\PriselistFilter\PriselistFilter\obj\Debug\PriselistFilter.Properties.Resource
 D:\PriselistFilter\PriselistFilter\obj\Debug\PriselistFilter.csproj.GenerateResource.Cache
 D:\PriselistFilter\PriselistFilter\obj\Debug\PriselistFilter.exe
 D:\PriselistFilter\PriselistFilter\obj\Debug\PriselistFilter.pdb
+D:\PriselistFilter\PriselistFilter\bin\Debug\LinqToExcel.dll
+D:\PriselistFilter\PriselistFilter\bin\Debug\Remotion.Data.Linq.dll
+D:\PriselistFilter\PriselistFilter\bin\Debug\Remotion.dll
+D:\PriselistFilter\PriselistFilter\bin\Debug\Remotion.Interfaces.dll
+D:\PriselistFilter\PriselistFilter\bin\Debug\LinqToExcel.xml
+D:\PriselistFilter\PriselistFilter\bin\Debug\Excel.dll
+D:\PriselistFilter\PriselistFilter\bin\Debug\Excel.Helper.dll
+D:\PriselistFilter\PriselistFilter\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\PriselistFilter\PriselistFilter\bin\Debug\Excel.pdb
+D:\PriselistFilter\PriselistFilter\bin\Debug\Excel.Helper.xml

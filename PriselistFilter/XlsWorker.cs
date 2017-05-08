@@ -15,7 +15,7 @@ namespace PriselistFilter
     public class XlsWorker
     {
         private List<Product> xlsData;
-        private List<Product> filteredData;
+        //private List<Product> filteredData;
         public XlsWorker(string filename)
         {
             FileStream stream = File.Open(filename, FileMode.Open, FileAccess.Read);
@@ -44,7 +44,14 @@ namespace PriselistFilter
 
         public void FilterRowsByManufactor(string[] keywords)
         {
-            filteredData = xlsData.Where(o => keywords.Contains(o.Manufactor)).ToList();
+            xlsData = xlsData.Where(o => keywords.Contains(o.Manufactor.ToLower())).ToList();
+        }
+
+        public void FilterRowsByName(string[] keywords, string[] notIncludeKeywords)
+        {
+            xlsData = xlsData.Where(o => keywords.Intersect(o.FullName.ToLower().Split(' ')).ToList().Count > 0 &&
+                                         notIncludeKeywords.Intersect(o.FullName.ToLower().Split(' ')).ToList().Count == 0)
+                                         .ToList();
         }
 
         public void SaveFile()
@@ -52,12 +59,12 @@ namespace PriselistFilter
             var csv = new StringBuilder();
             PropertyInfo[] properties = typeof(Product).GetProperties();
 
-            for (int i = 0; i < filteredData.Count; i++)
+            for (int i = 0; i < xlsData.Count; i++)
             {
                 var newLine = "";
                 foreach (PropertyInfo propertyInfo in properties)
                 {
-                    newLine += propertyInfo.GetValue(filteredData[i]) + ";";
+                    newLine += propertyInfo.GetValue(xlsData[i]) + ";";
                 }
                 csv.AppendLine(newLine);
             }
