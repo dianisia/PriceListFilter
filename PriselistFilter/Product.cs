@@ -8,32 +8,27 @@ using LinqToExcel.Attributes;
 
 namespace PriselistFilter
 {
-    public class Product
+    public class Product: SaleEntity
     {
-        public string Manufactor { get; set; }
-
-        public string Article { get; set; }
-
-        public string FullName { get; set; }
-
-        public string Measure { get; set; }
-
-        public string Multiplicity { get; set; }
-
-        public string Price { get; set; }
-
-        public string Balance { get; set; }
-
-        public Product(string manufactor, string article, string fullname, 
-                        string measure, string mult, string price, string balance) 
+        public Product(string manufactor, string article, string fullname, string price, string quantity) 
         {
             Manufactor = manufactor;
             Article = article;
             FullName = fullname;
-            Measure = measure;
-            Multiplicity = mult;
-            Price = price;
-            Balance = balance;
+            Price = price == "" ? 0 : (int) Math.Ceiling(Double.Parse(price));
+            Quantity = quantity == "" ? 0 : Int32.Parse(quantity);
+            ProductId = "";
+            Categories = "";
+            MainCategory = "";
+            Upc = "";
+            Ean = "";
+            Jan = "";
+            Isbn = "";
+            Mpn = "";
+            Location = "";
+            Model = "";
+            ImageName = "";
+            Shipping = "";
         }
     }
 }

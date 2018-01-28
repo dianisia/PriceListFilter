@@ -12,7 +12,8 @@ namespace PriselistFilter
 {
     public partial class Form1 : Form
     {
-        private XlsWorker xlsFileWorker;
+        private XlsInterface myXlsFileWorker;
+        private XlsInterface providerXlsFileWorker;
         public Form1()
         {
             InitializeComponent();
@@ -33,36 +34,88 @@ namespace PriselistFilter
 
         private void openFile_Click(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "xls files (*.xls)|*.xls";
+            openFileDialog1.Filter = "xls files (*.xls)|*.xls|(*.xlsx)|*.xlsx|(*.csv)|*.csv";
             openFileDialog1.FilterIndex = 2;
             openFileDialog1.RestoreDirectory = true;
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 fileNameLabel.Text = openFileDialog1.FileName;
-                xlsFileWorker = new XlsWorker(fileNameLabel.Text);
+                myXlsFileWorker = new MyXlsWorker(fileNameLabel.Text);
             }
         }
 
         private void startFilter_Click(object sender, EventArgs e)
         {
             saveButton.Enabled = true;
+            if (filterMyListRadio.Checked)
+            {
+                filterFile(myXlsFileWorker);
+            }
+            else if (filterProviderListRadio.Checked)
+            {
+                filterFile(providerXlsFileWorker);
+            }
+        }
+
+        private void filterFile(XlsInterface worker)
+        {
             if (checkFilterByManufactor.Checked)
             {
                 var manufactorKeyWords = manufactorInput.Text.Split(',').Select(keyword => keyword.Trim().ToLower()).ToArray();
-                xlsFileWorker.FilterRowsByManufactor(manufactorKeyWords);
+                worker.FilterRowsByManufactor(manufactorKeyWords);
             }
             if (checkFIlterByName.Checked)
             {
                 var nameKeyWords = nameInput.Text.Split(',').Select(keyword => keyword.Trim().ToLower()).ToArray();
                 var notIncludeKeyWords = notIncludeNameInput.Text.Split(',').Select(keyword => keyword.Trim().ToLower()).ToArray();
-                xlsFileWorker.FilterRowsByName(nameKeyWords, notIncludeKeyWords);
+                if (notIncludeKeyWords.Length > 1)
+                {
+                    worker.FilterRowsByName(nameKeyWords, notIncludeKeyWords);
+                }
+                else if (notIncludeKeyWords[0] == "")
+                {
+                    worker.FilterRowsByName(nameKeyWords);
+                }
+               
             }
         }
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            xlsFileWorker.SaveFile();
+            if (filterMyListRadio.Checked)
+            {
+                myXlsFileWorker.SaveFile("myFileResult.csv");
+            }
+            else if (filterProviderListRadio.Checked) 
+            {
+                providerXlsFileWorker.SaveFile("providerFileResult.csv");
+            }
+        }
+
+        private void openProviderFile_Click(object sender, EventArgs e)
+        {
+            openFileDialog2.Filter = "xls files (*.xls)|*.xls|(*.xlsx)|*.xlsx|(*.csv)|*.csv";
+            openFileDialog2.FilterIndex = 2;
+            openFileDialog2.RestoreDirectory = true;
+
+            if (openFileDialog2.ShowDialog() == DialogResult.OK)
+            {
+                providerFileName.Text = openFileDialog2.FileName;
+                providerXlsFileWorker = new ProviderXlsWorker(openFileDialog2.FileName);
+            }
+        }
+
+        private void compareButton_Click(object sender, EventArgs e)
+        {
+            double myMarkup = markup.Text == "" ? 0 : Double.Parse(markup.Text);
+            var comparator = new Comparator(myMarkup);
+            comparator.Compare(myXlsFileWorker, providerXlsFileWorker);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            myXlsFileWorker.SaveFile("myFileResult.csv");
         }
     }
 }
